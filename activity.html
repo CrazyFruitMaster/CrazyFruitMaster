@@ -3,6 +3,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0,
       maximum-scale=1.0, user-scalable=no">
@@ -16,8 +17,12 @@
     box-sizing: border-box;
 }
 
-body {
+html, body {
     width: 100%;
+    min-height: 100%;
+}
+
+body {
     min-height: 100vh;
     font-family: Arial, sans-serif;
     background: #17112e;
@@ -28,12 +33,24 @@ body {
     width: 100%;
     min-height: 100vh;
     padding: 16px;
+
     background:
-        radial-gradient(circle at 50% 15%, #6742a5 0%, transparent 45%),
-        linear-gradient(180deg, #302052, #17112e);
+        radial-gradient(
+            circle at 50% 15%,
+            #6742a5 0%,
+            transparent 45%
+        ),
+        linear-gradient(
+            180deg,
+            #302052,
+            #17112e
+        );
 }
 
-/* 顶部栏 */
+/* ==========================
+   顶部栏
+========================== */
+
 .header {
     display: flex;
     align-items: center;
@@ -54,28 +71,44 @@ body {
 .header-btn {
     width: 38px;
     height: 38px;
+
     border: 1px solid rgba(255,255,255,.25);
     border-radius: 10px;
+
     background: rgba(255,255,255,.12);
     color: #fff;
+
     font-size: 22px;
     cursor: pointer;
 }
 
-/* 活动 Banner */
+/* ==========================
+   活动 Banner
+========================== */
+
 .banner {
     padding: 28px 20px;
+
     border-radius: 18px;
     text-align: center;
-    background: linear-gradient(135deg, #ffb44d, #f35c83);
+
+    background: linear-gradient(
+        135deg,
+        #ffb44d,
+        #f35c83
+    );
+
     box-shadow: 0 8px 25px rgba(0,0,0,.25);
 }
 
 .banner-tag {
     display: inline-block;
+
     padding: 5px 14px;
+
     background: rgba(255,255,255,.25);
     border-radius: 20px;
+
     font-size: 12px;
 }
 
@@ -90,12 +123,17 @@ body {
     font-size: 14px;
 }
 
-/* 奖励区域 */
+/* ==========================
+   奖励区域
+========================== */
+
 .reward {
     margin-top: 20px;
     padding: 20px;
+
     border-radius: 16px;
     background: rgba(255,255,255,.09);
+
     text-align: center;
 }
 
@@ -115,9 +153,13 @@ body {
     color: #d3cbe8;
 }
 
-/* 任务区域 */
+/* ==========================
+   任务区域
+========================== */
+
 .task-title {
     margin: 24px 0 14px;
+
     font-size: 18px;
     font-weight: bold;
 }
@@ -126,8 +168,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     padding: 15px;
     margin-bottom: 10px;
+
     border-radius: 12px;
     background: rgba(255,255,255,.09);
 }
@@ -138,6 +182,7 @@ body {
 
 .task-info p {
     margin-top: 6px;
+
     font-size: 12px;
     color: #bdb3d5;
 }
@@ -147,7 +192,10 @@ body {
     font-size: 13px;
 }
 
-/* 进度条 */
+/* ==========================
+   进度条
+========================== */
+
 .progress-box {
     margin-top: 20px;
 }
@@ -155,6 +203,7 @@ body {
 .progress-info {
     display: flex;
     justify-content: space-between;
+
     font-size: 12px;
     margin-bottom: 8px;
 }
@@ -162,29 +211,45 @@ body {
 .progress-bar {
     width: 100%;
     height: 9px;
+
     border-radius: 10px;
     background: rgba(255,255,255,.15);
+
     overflow: hidden;
 }
 
 .progress-value {
     width: 40%;
     height: 100%;
+
     border-radius: 10px;
     background: #ffc85c;
 }
 
-/* 底部按钮 */
+/* ==========================
+   底部按钮
+========================== */
+
 .join-btn {
     width: 100%;
     height: 50px;
+
     margin-top: 25px;
+
     border: none;
     border-radius: 25px;
-    background: linear-gradient(90deg, #ffcb5c, #ff914d);
+
+    background: linear-gradient(
+        90deg,
+        #ffcb5c,
+        #ff914d
+    );
+
     color: #592d16;
+
     font-size: 17px;
     font-weight: bold;
+
     cursor: pointer;
 }
 
@@ -201,152 +266,428 @@ body {
 
     <!-- 顶部 -->
     <div class="header">
-        <div class="header-title">活动中心</div>
+
+        <div class="header-title">
+            活动中心
+        </div>
 
         <div class="header-actions">
-            <button class="header-btn"
-                    onclick="toggleMaximize()"
-                    id="maximizeBtn"
-                    title="最大化">□</button>
 
-            <button class="header-btn"
-                    onclick="closeActivity()"
-                    title="关闭">×</button>
+            <button
+                class="header-btn"
+                onclick="toggleMaximize()"
+                id="maximizeBtn"
+                title="最大化">
+                □
+            </button>
+
+            <button
+                class="header-btn"
+                onclick="closeActivity()"
+                title="关闭">
+                ×
+            </button>
+
         </div>
     </div>
 
+
     <!-- 活动 Banner -->
     <div class="banner">
-        <span class="banner-tag">LIMITED EVENT</span>
+
+        <span class="banner-tag">
+            LIMITED EVENT
+        </span>
+
         <h1>限时狂欢活动</h1>
-        <p>完成每日任务，领取丰厚奖励！</p>
+
+        <p>
+            完成每日任务，领取丰厚奖励！
+        </p>
+
     </div>
+
 
     <!-- 奖励展示 -->
     <div class="reward">
-        <div class="reward-icon">🎁</div>
-        <h3>限定豪华礼包</h3>
-        <p>金币 × 5000 · 幸运宝箱 × 3</p>
+
+        <div class="reward-icon">
+            🎁
+        </div>
+
+        <h3>
+            限定豪华礼包
+        </h3>
+
+        <p>
+            金币 × 5000 · 幸运宝箱 × 3
+        </p>
+
     </div>
 
+
     <!-- 活动任务 -->
-    <div class="task-title">活动任务</div>
+    <div class="task-title">
+        活动任务
+    </div>
+
 
     <div class="task-item">
+
         <div class="task-info">
             <h4>每日登录游戏</h4>
             <p>每天登录即可领取奖励</p>
         </div>
-        <div class="task-reward">+500金币</div>
+
+        <div class="task-reward">
+            +500金币
+        </div>
+
     </div>
 
+
     <div class="task-item">
+
         <div class="task-info">
             <h4>完成 3 场游戏</h4>
             <p>累计完成指定对局</p>
         </div>
-        <div class="task-reward">+1000金币</div>
+
+        <div class="task-reward">
+            +1000金币
+        </div>
+
     </div>
 
+
     <div class="task-item">
+
         <div class="task-info">
             <h4>邀请好友参与</h4>
             <p>邀请好友一起游戏</p>
         </div>
-        <div class="task-reward">+宝箱 × 1</div>
+
+        <div class="task-reward">
+            +宝箱 × 1
+        </div>
+
     </div>
 
-    <!-- 进度 -->
+
+    <!-- 活动进度 -->
     <div class="progress-box">
+
         <div class="progress-info">
+
             <span>活动完成进度</span>
+
             <span>2 / 5</span>
+
         </div>
 
         <div class="progress-bar">
+
             <div class="progress-value"></div>
+
         </div>
+
     </div>
 
-    <!-- 参与按钮 -->
-    <button class="join-btn" onclick="joinActivity()">
+
+    <!-- 参与活动 -->
+    <button
+        class="join-btn"
+        onclick="joinActivity()">
+
         立即参与
+
     </button>
 
 </div>
 
+
 <script>
 
-// ==============================
-// Unity 消息通信
-// ==============================
+// ========================================
+// 1. Facebook 配置
+// ========================================
+
+// 默认配置
+// 实际项目中可以从服务器动态获取
+
+const FACEBOOK_CONFIG = {
+
+    enabled: false,
+
+    appId: "",
+
+    clientToken: ""
+
+};
+
+
+// ========================================
+// 2. 服务器配置地址（可选）
+// ========================================
+
+// 留空表示使用上面的 FACEBOOK_CONFIG
+//
+// 如果需要动态配置，填写 HTTPS API 地址
+//
+// 服务器返回格式：
+// {
+//     "enabled": true,
+//     "appId": "123456789",
+//     "clientToken": "xxxxxxxx"
+// }
+
+const FACEBOOK_CONFIG_URL = "";
+
+
+// ========================================
+// 3. Unity 消息通信
+// ========================================
 
 function sendToUnity(action, data = {}) {
 
-    const message = {
+    const payload = {
+
         source: "activity-h5",
-        type: "activity",
-        action: action,
-        data: data,
-        timestamp: Date.now()
+
+        timestamp: Date.now(),
+
+        ...data
+
     };
 
-    const json = JSON.stringify(message);
+    console.log(
+        "[H5 -> Unity]",
+        action,
+        payload
+    );
 
-    console.log("发送给Unity:", json);
 
-    // Unity WebView 插件通信
-    if (window.Unity &&
-        typeof window.Unity.call === "function") {
+    // ------------------------------
+    // UniWebView v6
+    // Channel Messaging
+    // ------------------------------
 
-        window.Unity.call(json);
-        return true;
-    }
+    if (
+        window.uniwebview &&
+        typeof window.uniwebview.send === "function"
+    ) {
 
-    // Unity WebGL 通信
-    if (window.unityInstance &&
-        typeof window.unityInstance.SendMessage === "function") {
-
-        window.unityInstance.SendMessage(
-            "ActivityPageBridge",
-            "OnH5Message",
-            json
+        window.uniwebview.send(
+            action,
+            payload
         );
+
         return true;
+
     }
 
-    // iframe 嵌入通信
-    if (window.parent !== window) {
-        window.parent.postMessage(json, "*");
+
+    // ------------------------------
+    // UniWebView v4 / v5
+    // URL Scheme Messaging
+    // ------------------------------
+
+    const json = JSON.stringify(payload);
+
+    const encoded = encodeURIComponent(json);
+
+    const url =
+        "uniwebview://" +
+        encodeURIComponent(action) +
+        "?payload=" +
+        encoded;
+
+    try {
+
+        window.location.href = url;
+
         return true;
+
+    } catch (error) {
+
+        console.error(
+            "Unity消息发送失败:",
+            error
+        );
+
+        return false;
+
     }
 
-    console.warn("Unity通信接口未连接");
-    return false;
 }
 
 
-// ==============================
-// 关闭活动页面
-// ==============================
+// ========================================
+// 4. Facebook 配置发送
+// ========================================
+
+function sendFacebookConfig(config) {
+
+    if (!config) {
+
+        console.error("Facebook配置为空");
+
+        return false;
+
+    }
+
+
+    const facebookData = {
+
+        enabled: config.enabled === true,
+
+        appId: String(config.appId || "").trim(),
+
+        clientToken: String(
+            config.clientToken || ""
+        ).trim()
+
+    };
+
+
+    // 启用Facebook时必须提供完整配置
+
+    if (
+        facebookData.enabled &&
+        (
+            !facebookData.appId ||
+            !facebookData.clientToken
+        )
+    ) {
+
+        console.error(
+            "Facebook App ID 或 Client Token 不能为空"
+        );
+
+        // 配置错误，通知Unity关闭Facebook
+
+        sendToUnity("facebook_config", {
+
+            enabled: false,
+
+            appId: "",
+
+            clientToken: ""
+
+        });
+
+        return false;
+
+    }
+
+
+    // 发送给Unity
+
+    return sendToUnity(
+        "facebook_config",
+        facebookData
+    );
+
+}
+
+
+// ========================================
+// 5. 获取 Facebook 配置
+// ========================================
+
+async function loadFacebookConfig() {
+
+    let config = FACEBOOK_CONFIG;
+
+
+    // 如果配置了服务器地址，则优先获取远程配置
+
+    if (FACEBOOK_CONFIG_URL) {
+
+        try {
+
+            const response = await fetch(
+                FACEBOOK_CONFIG_URL,
+                {
+                    method: "GET",
+                    cache: "no-store",
+                    credentials: "omit"
+                }
+            );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "HTTP Error: " + response.status
+                );
+
+            }
+
+
+            const result = await response.json();
+
+            config = result.facebook || result;
+
+
+        } catch (error) {
+
+            console.error(
+                "获取Facebook配置失败:",
+                error
+            );
+
+
+            // 获取失败默认关闭
+
+            config = {
+
+                enabled: false,
+
+                appId: "",
+
+                clientToken: ""
+
+            };
+
+        }
+
+    }
+
+
+    // 将配置发送给Unity
+
+    sendFacebookConfig(config);
+
+}
+
+
+// ========================================
+// 6. 关闭活动页面
+// ========================================
 
 function closeActivity() {
 
     sendToUnity("close");
+
 }
 
 
-// ==============================
-// 最大化 / 还原
-// ==============================
+// ========================================
+// 7. 最大化 / 还原
+// ========================================
 
 let isMaximized = false;
 
-async function toggleMaximize() {
+
+function toggleMaximize() {
 
     isMaximized = !isMaximized;
 
-    const btn = document.getElementById("maximizeBtn");
+    const btn = document.getElementById(
+        "maximizeBtn"
+    );
+
 
     if (isMaximized) {
 
@@ -354,46 +695,45 @@ async function toggleMaximize() {
 
         sendToUnity("maximize");
 
-        // 独立浏览器环境下的全屏备用方案
-        if (!window.Unity &&
-            !window.unityInstance &&
-            window.parent === window &&
-            document.documentElement.requestFullscreen) {
-
-            try {
-                await document.documentElement.requestFullscreen();
-            } catch (e) {
-                console.log("无法进入全屏", e);
-            }
-        }
-
     } else {
 
         btn.innerText = "□";
 
         sendToUnity("restore");
 
-        if (document.fullscreenElement) {
-            try {
-                await document.exitFullscreen();
-            } catch (e) {
-                console.log(e);
-            }
-        }
     }
+
 }
 
 
-// ==============================
-// 参与活动
-// ==============================
+// ========================================
+// 8. 参与活动
+// ========================================
 
 function joinActivity() {
 
     sendToUnity("join", {
+
         activityId: 10001
+
     });
+
 }
+
+
+// ========================================
+// 9. 页面初始化
+// ========================================
+
+window.addEventListener("load", function() {
+
+    console.log("活动页面加载完成");
+
+    // 获取Facebook配置并发送给Unity
+
+    loadFacebookConfig();
+
+});
 
 </script>
 
