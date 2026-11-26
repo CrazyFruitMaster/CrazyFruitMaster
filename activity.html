@@ -1,0 +1,401 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+      maximum-scale=1.0, user-scalable=no">
+
+<title>活动中心</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: #17112e;
+    color: #fff;
+}
+
+.activity-page {
+    width: 100%;
+    min-height: 100vh;
+    padding: 16px;
+    background:
+        radial-gradient(circle at 50% 15%, #6742a5 0%, transparent 45%),
+        linear-gradient(180deg, #302052, #17112e);
+}
+
+/* 顶部栏 */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.header-title {
+    font-size: 21px;
+    font-weight: bold;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.header-btn {
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 10px;
+    background: rgba(255,255,255,.12);
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* 活动 Banner */
+.banner {
+    padding: 28px 20px;
+    border-radius: 18px;
+    text-align: center;
+    background: linear-gradient(135deg, #ffb44d, #f35c83);
+    box-shadow: 0 8px 25px rgba(0,0,0,.25);
+}
+
+.banner-tag {
+    display: inline-block;
+    padding: 5px 14px;
+    background: rgba(255,255,255,.25);
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.banner h1 {
+    margin-top: 16px;
+    font-size: 28px;
+    color: #fff;
+}
+
+.banner p {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+/* 奖励区域 */
+.reward {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.09);
+    text-align: center;
+}
+
+.reward-icon {
+    font-size: 48px;
+    margin-bottom: 8px;
+}
+
+.reward h3 {
+    color: #ffd66e;
+    font-size: 19px;
+}
+
+.reward p {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #d3cbe8;
+}
+
+/* 任务区域 */
+.task-title {
+    margin: 24px 0 14px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.09);
+}
+
+.task-info h4 {
+    font-size: 14px;
+}
+
+.task-info p {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #bdb3d5;
+}
+
+.task-reward {
+    color: #ffd66e;
+    font-size: 13px;
+}
+
+/* 进度条 */
+.progress-box {
+    margin-top: 20px;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 9px;
+    border-radius: 10px;
+    background: rgba(255,255,255,.15);
+    overflow: hidden;
+}
+
+.progress-value {
+    width: 40%;
+    height: 100%;
+    border-radius: 10px;
+    background: #ffc85c;
+}
+
+/* 底部按钮 */
+.join-btn {
+    width: 100%;
+    height: 50px;
+    margin-top: 25px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(90deg, #ffcb5c, #ff914d);
+    color: #592d16;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.join-btn:active,
+.header-btn:active {
+    transform: scale(.96);
+}
+</style>
+</head>
+
+<body>
+
+<div class="activity-page">
+
+    <!-- 顶部 -->
+    <div class="header">
+        <div class="header-title">活动中心</div>
+
+        <div class="header-actions">
+            <button class="header-btn"
+                    onclick="toggleMaximize()"
+                    id="maximizeBtn"
+                    title="最大化">□</button>
+
+            <button class="header-btn"
+                    onclick="closeActivity()"
+                    title="关闭">×</button>
+        </div>
+    </div>
+
+    <!-- 活动 Banner -->
+    <div class="banner">
+        <span class="banner-tag">LIMITED EVENT</span>
+        <h1>限时狂欢活动</h1>
+        <p>完成每日任务，领取丰厚奖励！</p>
+    </div>
+
+    <!-- 奖励展示 -->
+    <div class="reward">
+        <div class="reward-icon">🎁</div>
+        <h3>限定豪华礼包</h3>
+        <p>金币 × 5000 · 幸运宝箱 × 3</p>
+    </div>
+
+    <!-- 活动任务 -->
+    <div class="task-title">活动任务</div>
+
+    <div class="task-item">
+        <div class="task-info">
+            <h4>每日登录游戏</h4>
+            <p>每天登录即可领取奖励</p>
+        </div>
+        <div class="task-reward">+500金币</div>
+    </div>
+
+    <div class="task-item">
+        <div class="task-info">
+            <h4>完成 3 场游戏</h4>
+            <p>累计完成指定对局</p>
+        </div>
+        <div class="task-reward">+1000金币</div>
+    </div>
+
+    <div class="task-item">
+        <div class="task-info">
+            <h4>邀请好友参与</h4>
+            <p>邀请好友一起游戏</p>
+        </div>
+        <div class="task-reward">+宝箱 × 1</div>
+    </div>
+
+    <!-- 进度 -->
+    <div class="progress-box">
+        <div class="progress-info">
+            <span>活动完成进度</span>
+            <span>2 / 5</span>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-value"></div>
+        </div>
+    </div>
+
+    <!-- 参与按钮 -->
+    <button class="join-btn" onclick="joinActivity()">
+        立即参与
+    </button>
+
+</div>
+
+<script>
+
+// ==============================
+// Unity 消息通信
+// ==============================
+
+function sendToUnity(action, data = {}) {
+
+    const message = {
+        source: "activity-h5",
+        type: "activity",
+        action: action,
+        data: data,
+        timestamp: Date.now()
+    };
+
+    const json = JSON.stringify(message);
+
+    console.log("发送给Unity:", json);
+
+    // Unity WebView 插件通信
+    if (window.Unity &&
+        typeof window.Unity.call === "function") {
+
+        window.Unity.call(json);
+        return true;
+    }
+
+    // Unity WebGL 通信
+    if (window.unityInstance &&
+        typeof window.unityInstance.SendMessage === "function") {
+
+        window.unityInstance.SendMessage(
+            "ActivityPageBridge",
+            "OnH5Message",
+            json
+        );
+        return true;
+    }
+
+    // iframe 嵌入通信
+    if (window.parent !== window) {
+        window.parent.postMessage(json, "*");
+        return true;
+    }
+
+    console.warn("Unity通信接口未连接");
+    return false;
+}
+
+
+// ==============================
+// 关闭活动页面
+// ==============================
+
+function closeActivity() {
+
+    sendToUnity("close");
+}
+
+
+// ==============================
+// 最大化 / 还原
+// ==============================
+
+let isMaximized = false;
+
+async function toggleMaximize() {
+
+    isMaximized = !isMaximized;
+
+    const btn = document.getElementById("maximizeBtn");
+
+    if (isMaximized) {
+
+        btn.innerText = "❐";
+
+        sendToUnity("maximize");
+
+        // 独立浏览器环境下的全屏备用方案
+        if (!window.Unity &&
+            !window.unityInstance &&
+            window.parent === window &&
+            document.documentElement.requestFullscreen) {
+
+            try {
+                await document.documentElement.requestFullscreen();
+            } catch (e) {
+                console.log("无法进入全屏", e);
+            }
+        }
+
+    } else {
+
+        btn.innerText = "□";
+
+        sendToUnity("restore");
+
+        if (document.fullscreenElement) {
+            try {
+                await document.exitFullscreen();
+            } catch (e) {
+                console.log(e);
+            }
+        }
+    }
+}
+
+
+// ==============================
+// 参与活动
+// ==============================
+
+function joinActivity() {
+
+    sendToUnity("join", {
+        activityId: 10001
+    });
+}
+
+</script>
+
+</body>
+</html>
