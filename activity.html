@@ -1,741 +1,595 @@
-
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0,
-      maximum-scale=1.0, user-scalable=no">
-
-<title>活动中心</title>
-
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html, body {
-    width: 100%;
-    min-height: 100%;
-}
-
-body {
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
-    background: #17112e;
-    color: #fff;
-}
-
-.activity-page {
-    width: 100%;
-    min-height: 100vh;
-    padding: 16px;
-
-    background:
-        radial-gradient(
-            circle at 50% 15%,
-            #6742a5 0%,
-            transparent 45%
-        ),
-        linear-gradient(
-            180deg,
-            #302052,
-            #17112e
-        );
-}
-
-/* ==========================
-   顶部栏
-========================== */
-
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 24px;
-}
-
-.header-title {
-    font-size: 21px;
-    font-weight: bold;
-}
-
-.header-actions {
-    display: flex;
-    gap: 10px;
-}
-
-.header-btn {
-    width: 38px;
-    height: 38px;
-
-    border: 1px solid rgba(255,255,255,.25);
-    border-radius: 10px;
-
-    background: rgba(255,255,255,.12);
-    color: #fff;
-
-    font-size: 22px;
-    cursor: pointer;
-}
-
-/* ==========================
-   活动 Banner
-========================== */
-
-.banner {
-    padding: 28px 20px;
-
-    border-radius: 18px;
-    text-align: center;
-
-    background: linear-gradient(
-        135deg,
-        #ffb44d,
-        #f35c83
-    );
-
-    box-shadow: 0 8px 25px rgba(0,0,0,.25);
-}
-
-.banner-tag {
-    display: inline-block;
-
-    padding: 5px 14px;
-
-    background: rgba(255,255,255,.25);
-    border-radius: 20px;
-
-    font-size: 12px;
-}
-
-.banner h1 {
-    margin-top: 16px;
-    font-size: 28px;
-    color: #fff;
-}
-
-.banner p {
-    margin-top: 10px;
-    font-size: 14px;
-}
-
-/* ==========================
-   奖励区域
-========================== */
-
-.reward {
-    margin-top: 20px;
-    padding: 20px;
-
-    border-radius: 16px;
-    background: rgba(255,255,255,.09);
-
-    text-align: center;
-}
-
-.reward-icon {
-    font-size: 48px;
-    margin-bottom: 8px;
-}
-
-.reward h3 {
-    color: #ffd66e;
-    font-size: 19px;
-}
-
-.reward p {
-    margin-top: 8px;
-    font-size: 13px;
-    color: #d3cbe8;
-}
-
-/* ==========================
-   任务区域
-========================== */
-
-.task-title {
-    margin: 24px 0 14px;
-
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.task-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 15px;
-    margin-bottom: 10px;
-
-    border-radius: 12px;
-    background: rgba(255,255,255,.09);
-}
-
-.task-info h4 {
-    font-size: 14px;
-}
-
-.task-info p {
-    margin-top: 6px;
-
-    font-size: 12px;
-    color: #bdb3d5;
-}
-
-.task-reward {
-    color: #ffd66e;
-    font-size: 13px;
-}
-
-/* ==========================
-   进度条
-========================== */
-
-.progress-box {
-    margin-top: 20px;
-}
-
-.progress-info {
-    display: flex;
-    justify-content: space-between;
-
-    font-size: 12px;
-    margin-bottom: 8px;
-}
-
-.progress-bar {
-    width: 100%;
-    height: 9px;
-
-    border-radius: 10px;
-    background: rgba(255,255,255,.15);
-
-    overflow: hidden;
-}
-
-.progress-value {
-    width: 40%;
-    height: 100%;
-
-    border-radius: 10px;
-    background: #ffc85c;
-}
-
-/* ==========================
-   底部按钮
-========================== */
-
-.join-btn {
-    width: 100%;
-    height: 50px;
-
-    margin-top: 25px;
-
-    border: none;
-    border-radius: 25px;
-
-    background: linear-gradient(
-        90deg,
-        #ffcb5c,
-        #ff914d
-    );
-
-    color: #592d16;
-
-    font-size: 17px;
-    font-weight: bold;
-
-    cursor: pointer;
-}
-
-.join-btn:active,
-.header-btn:active {
-    transform: scale(.96);
-}
-</style>
-</head>
-
-<body>
-
-<div class="activity-page">
-
-    <!-- 顶部 -->
-    <div class="header">
-
-        <div class="header-title">
-            活动中心
-        </div>
-
-        <div class="header-actions">
-
-            <button
-                class="header-btn"
-                onclick="toggleMaximize()"
-                id="maximizeBtn"
-                title="最大化">
-                □
-            </button>
-
-            <button
-                class="header-btn"
-                onclick="closeActivity()"
-                title="关闭">
-                ×
-            </button>
-
-        </div>
-    </div>
-
-
-    <!-- 活动 Banner -->
-    <div class="banner">
-
-        <span class="banner-tag">
-            LIMITED EVENT
-        </span>
-
-        <h1>限时狂欢活动</h1>
-
-        <p>
-            完成每日任务，领取丰厚奖励！
-        </p>
-
-    </div>
-
-
-    <!-- 奖励展示 -->
-    <div class="reward">
-
-        <div class="reward-icon">
-            🎁
-        </div>
-
-        <h3>
-            限定豪华礼包
-        </h3>
-
-        <p>
-            金币 × 5000 · 幸运宝箱 × 3
-        </p>
-
-    </div>
-
-
-    <!-- 活动任务 -->
-    <div class="task-title">
-        活动任务
-    </div>
-
-
-    <div class="task-item">
-
-        <div class="task-info">
-            <h4>每日登录游戏</h4>
-            <p>每天登录即可领取奖励</p>
-        </div>
-
-        <div class="task-reward">
-            +500金币
-        </div>
-
-    </div>
-
-
-    <div class="task-item">
-
-        <div class="task-info">
-            <h4>完成 3 场游戏</h4>
-            <p>累计完成指定对局</p>
-        </div>
-
-        <div class="task-reward">
-            +1000金币
-        </div>
-
-    </div>
-
-
-    <div class="task-item">
-
-        <div class="task-info">
-            <h4>邀请好友参与</h4>
-            <p>邀请好友一起游戏</p>
-        </div>
-
-        <div class="task-reward">
-            +宝箱 × 1
-        </div>
-
-    </div>
-
-
-    <!-- 活动进度 -->
-    <div class="progress-box">
-
-        <div class="progress-info">
-
-            <span>活动完成进度</span>
-
-            <span>2 / 5</span>
-
-        </div>
-
-        <div class="progress-bar">
-
-            <div class="progress-value"></div>
-
-        </div>
-
-    </div>
-
-
-    <!-- 参与活动 -->
-    <button
-        class="join-btn"
-        onclick="joinActivity()">
-
-        立即参与
-
-    </button>
-
-</div>
-
-
-<script>
-
-// ========================================
-// 1. Facebook 配置
-// ========================================
-
-// 默认配置
-// 实际项目中可以从服务器动态获取
-
-const FACEBOOK_CONFIG = {
-
-    enabled: false,
-
-    appId: "",
-
-    clientToken: ""
-
-};
-
-
-// ========================================
-// 2. 服务器配置地址（可选）
-// ========================================
-
-// 留空表示使用上面的 FACEBOOK_CONFIG
-//
-// 如果需要动态配置，填写 HTTPS API 地址
-//
-// 服务器返回格式：
-// {
-//     "enabled": true,
-//     "appId": "123456789",
-//     "clientToken": "xxxxxxxx"
-// }
-
-const FACEBOOK_CONFIG_URL = "";
-
-
-// ========================================
-// 3. Unity 消息通信
-// ========================================
-
-function sendToUnity(action, data = {}) {
-
-    const payload = {
-
-        source: "activity-h5",
-
-        timestamp: Date.now(),
-
-        ...data
-
-    };
-
-    console.log(
-        "[H5 -> Unity]",
-        action,
-        payload
-    );
-
-
-    // ------------------------------
-    // UniWebView v6
-    // Channel Messaging
-    // ------------------------------
-
-    if (
-        window.uniwebview &&
-        typeof window.uniwebview.send === "function"
-    ) {
-
-        window.uniwebview.send(
-            action,
-            payload
-        );
-
-        return true;
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Activity Center</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
 
-    // ------------------------------
-    // UniWebView v4 / v5
-    // URL Scheme Messaging
-    // ------------------------------
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background: #17112e;
+      color: #fff;
+    }
 
-    const json = JSON.stringify(payload);
+    .shell {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 100vh;
+      padding: calc(12px + env(safe-area-inset-top, 0px)) 14px calc(14px + env(safe-area-inset-bottom, 0px));
+      background:
+        radial-gradient(circle at 50% 12%, #6742a5 0%, transparent 48%),
+        linear-gradient(180deg, #302052, #17112e);
+    }
 
-    const encoded = encodeURIComponent(json);
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      margin-bottom: 10px;
+      z-index: 2;
+    }
 
-    const url =
+    .header-title {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .header-btn {
+      width: 38px;
+      height: 38px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .snap-wrap {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      display: flex;
+    }
+
+    .scroll-dots {
+      position: absolute;
+      right: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .scroll-dots span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .scroll-dots span.active {
+      height: 18px;
+      border-radius: 3px;
+      background: #ffc85c;
+    }
+
+    .snap-scroll {
+      flex: 1;
+      height: 100%;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-right: 10px;
+    }
+
+    .snap-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .panel {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-bottom: 8px;
+    }
+
+    .promo-card {
+      position: relative;
+      flex: 1;
+      min-height: min(72vh, 560px);
+      border-radius: 18px;
+      overflow: hidden;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-select: none;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .promo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+
+    .promo-fallback {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 24px;
+      text-align: center;
+      background: linear-gradient(145deg, #5e3f96, #2a1b4d 55%, #1a1230);
+    }
+
+    .promo-fallback .logo {
+      width: min(42vw, 160px);
+      height: min(42vw, 160px);
+      border-radius: 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+    }
+
+    .promo-fallback h2 {
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+
+    .promo-fallback p {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #d8cfea;
+      max-width: 280px;
+    }
+
+    .action-card {
+      flex: 1;
+      min-height: min(72vh, 560px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 22px;
+      border-radius: 18px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+
+    .action-icon {
+      font-size: 56px;
+      margin-bottom: 16px;
+    }
+
+    .action-card h2 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .action-card p {
+      font-size: 14px;
+      line-height: 1.55;
+      color: #c9bfd9;
+      max-width: 300px;
+      margin-bottom: 22px;
+    }
+
+  .primary-btn {
+      width: min(100%, 280px);
+      height: 50px;
+      border: none;
+      border-radius: 25px;
+      background: linear-gradient(90deg, #ffcb5c, #ff914d);
+      color: #592d16;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .primary-btn:active,
+    .header-btn:active,
+    .ghost-btn:active {
+      transform: scale(0.97);
+    }
+
+    .ghost-btn {
+      margin-top: 12px;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      background: rgba(0, 0, 0, 0.72);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .rate-modal {
+      width: min(100%, 340px);
+      padding: 24px 20px 20px;
+      border-radius: 18px;
+      background: #241a3d;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .rate-modal h3 {
+      font-size: 20px;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .rate-modal .hint {
+      text-align: center;
+      font-size: 13px;
+      color: #bdb3d5;
+      margin-bottom: 18px;
+    }
+
+    .stars {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .star {
+      font-size: 36px;
+      cursor: pointer;
+      filter: grayscale(0.85);
+      opacity: 0.55;
+      transition: transform 0.12s ease, opacity 0.12s ease;
+    }
+
+    .star.on {
+      filter: none;
+      opacity: 1;
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="header">
+      <div class="header-title">Activity Center</div>
+      <div class="header-actions">
+        <button type="button" class="header-btn" id="maximizeBtn" onclick="toggleMaximize()">□</button>
+        <button type="button" class="header-btn" onclick="closeActivity()">×</button>
+      </div>
+    </header>
+
+    <div class="snap-wrap">
+      <div class="scroll-dots" id="scrollDots" aria-hidden="true">
+        <span class="active" data-index="0"></span>
+        <span data-index="1"></span>
+        <span data-index="2"></span>
+        <span data-index="3"></span>
+      </div>
+
+      <div class="snap-scroll" id="snapScroll">
+        <section class="panel" data-panel="promo1">
+          <div class="promo-card">
+            <img
+              id="promoImg1"
+              src="assets/activity/promo_01.png"
+              alt="Crazy Fruit Master"
+              onerror="handlePromoImageError(1)"
+            />
+          </div>
+        </section>
+
+        <section class="panel" data-panel="promo2">
+          <div class="promo-card">
+            <img
+              id="promoImg2"
+              src="assets/activity/promo_02.png"
+              alt="Crazy Fruit Master"
+              onerror="handlePromoImageError(2)"
+            />
+          </div>
+        </section>
+
+        <section class="panel" data-panel="rate">
+          <div class="action-card">
+            <div class="action-icon">⭐</div>
+            <h2>Enjoying Crazy Fruit Master?</h2>
+            <p>Your rating helps us improve the match-3 experience and invites more players to organize their fruit stalls.</p>
+            <button type="button" class="primary-btn" id="rateEntryBtn">Rate the Game</button>
+          </div>
+        </section>
+
+        <section class="panel" data-panel="privacy">
+          <div class="action-card">
+            <div class="action-icon">🔒</div>
+            <h2>Privacy &amp; Data</h2>
+            <p>Learn how local saves, ads, and the Facebook Analytics SDK handle device information. The full policy will open in your system browser.</p>
+            <button type="button" class="primary-btn" id="privacyBtn">View Privacy Policy</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="rateModalBackdrop" role="dialog" aria-modal="true" aria-labelledby="rateModalTitle">
+    <div class="rate-modal">
+      <h3 id="rateModalTitle">Rate the Game</h3>
+      <p class="hint">Choose 1–5 stars, then submit your rating.</p>
+      <div class="stars" id="starRow">
+        <span class="star" data-star="1" role="button" tabindex="0">★</span>
+        <span class="star" data-star="2" role="button" tabindex="0">★</span>
+        <span class="star" data-star="3" role="button" tabindex="0">★</span>
+        <span class="star" data-star="4" role="button" tabindex="0">★</span>
+        <span class="star" data-star="5" role="button" tabindex="0">★</span>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="primary-btn" id="rateSubmitBtn">Submit Rating</button>
+        <button type="button" class="primary-btn ghost-btn" id="rateCancelBtn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const PRIVACY_URL = "https://crazyfruitmaster.github.io/CrazyFruitMaster/Privacy.html";
+    const PROMO_FALLBACK_ICON = "https://crazyfruitmaster.github.io/CrazyFruitMaster/AppIcon_1024.png";
+
+    const FACEBOOK_CONFIG = {
+      enabled: false,
+      appId: "",
+      clientToken: ""
+    };
+
+    const FACEBOOK_CONFIG_URL = "";
+
+    let isMaximized = false;
+    let selectedStars = 5;
+
+    function sendToUnity(action, data) {
+      const payload = Object.assign(
+        {
+          source: "activity-h5",
+          timestamp: Date.now()
+        },
+        data || {}
+      );
+
+      console.log("[H5 -> Unity]", action, payload);
+
+      if (window.uniwebview && typeof window.uniwebview.send === "function") {
+        window.uniwebview.send(action, payload);
+        return true;
+      }
+
+      const encoded = encodeURIComponent(JSON.stringify(payload));
+      const url =
         "uniwebview://" +
         encodeURIComponent(action) +
         "?payload=" +
         encoded;
 
-    try {
-
+      try {
         window.location.href = url;
-
         return true;
-
-    } catch (error) {
-
-        console.error(
-            "Unity消息发送失败:",
-            error
-        );
-
+      } catch (error) {
+        console.error("Failed to send message to Unity:", error);
         return false;
-
+      }
     }
 
-}
-
-
-// ========================================
-// 4. Facebook 配置发送
-// ========================================
-
-function sendFacebookConfig(config) {
-
-    if (!config) {
-
-        console.error("Facebook配置为空");
-
+    function sendFacebookConfig(config) {
+      if (!config) {
+        console.error("Facebook configuration is missing.");
         return false;
+      }
 
-    }
-
-
-    const facebookData = {
-
+      const facebookData = {
         enabled: config.enabled === true,
-
         appId: String(config.appId || "").trim(),
+        clientToken: String(config.clientToken || "").trim()
+      };
 
-        clientToken: String(
-            config.clientToken || ""
-        ).trim()
-
-    };
-
-
-    // 启用Facebook时必须提供完整配置
-
-    if (
-        facebookData.enabled &&
-        (
-            !facebookData.appId ||
-            !facebookData.clientToken
-        )
-    ) {
-
-        console.error(
-            "Facebook App ID 或 Client Token 不能为空"
-        );
-
-        // 配置错误，通知Unity关闭Facebook
-
+      if (facebookData.enabled && (!facebookData.appId || !facebookData.clientToken)) {
+        console.error("Facebook App ID and Client Token are required.");
         sendToUnity("facebook_config", {
-
-            enabled: false,
-
-            appId: "",
-
-            clientToken: ""
-
+          enabled: false,
+          appId: "",
+          clientToken: ""
         });
-
         return false;
+      }
 
+      return sendToUnity("facebook_config", facebookData);
     }
 
+    async function loadFacebookConfig() {
+      let config = FACEBOOK_CONFIG;
 
-    // 发送给Unity
-
-    return sendToUnity(
-        "facebook_config",
-        facebookData
-    );
-
-}
-
-
-// ========================================
-// 5. 获取 Facebook 配置
-// ========================================
-
-async function loadFacebookConfig() {
-
-    let config = FACEBOOK_CONFIG;
-
-
-    // 如果配置了服务器地址，则优先获取远程配置
-
-    if (FACEBOOK_CONFIG_URL) {
-
+      if (FACEBOOK_CONFIG_URL) {
         try {
-
-            const response = await fetch(
-                FACEBOOK_CONFIG_URL,
-                {
-                    method: "GET",
-                    cache: "no-store",
-                    credentials: "omit"
-                }
-            );
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    "HTTP Error: " + response.status
-                );
-
-            }
-
-
-            const result = await response.json();
-
-            config = result.facebook || result;
-
-
+          const response = await fetch(FACEBOOK_CONFIG_URL, {
+            method: "GET",
+            cache: "no-store",
+            credentials: "omit"
+          });
+          if (!response.ok) {
+            throw new Error("HTTP Error: " + response.status);
+          }
+          const result = await response.json();
+          config = result.facebook || result;
         } catch (error) {
-
-            console.error(
-                "获取Facebook配置失败:",
-                error
-            );
-
-
-            // 获取失败默认关闭
-
-            config = {
-
-                enabled: false,
-
-                appId: "",
-
-                clientToken: ""
-
-            };
-
+          console.error("Failed to load Facebook configuration:", error);
+          config = { enabled: false, appId: "", clientToken: "" };
         }
+      }
 
+      sendFacebookConfig(config);
     }
 
+    function reportActivityPageView(surface) {
+      const value = surface === "privacy" ? 2 : 1;
+      sendToUnity("ActivityPageView", { value: value });
+    }
 
-    // 将配置发送给Unity
+    function closeActivity() {
+      sendToUnity("close");
+    }
 
-    sendFacebookConfig(config);
-
-}
-
-
-// ========================================
-// 6. 关闭活动页面
-// ========================================
-
-function closeActivity() {
-
-    sendToUnity("close");
-
-}
-
-
-// ========================================
-// 7. 最大化 / 还原
-// ========================================
-
-let isMaximized = false;
-
-
-function toggleMaximize() {
-
-    isMaximized = !isMaximized;
-
-    const btn = document.getElementById(
-        "maximizeBtn"
-    );
-
-
-    if (isMaximized) {
-
-        btn.innerText = "❐";
-
+    function toggleMaximize() {
+      isMaximized = !isMaximized;
+      const btn = document.getElementById("maximizeBtn");
+      if (isMaximized) {
+        btn.textContent = "❐";
         sendToUnity("maximize");
-
-    } else {
-
-        btn.innerText = "□";
-
+      } else {
+        btn.textContent = "□";
         sendToUnity("restore");
-
+      }
     }
 
-}
+    function openPrivacy() {
+      reportActivityPageView("privacy");
+      sendToUnity("openwindow", { url: PRIVACY_URL });
+    }
 
+    function openRateModal() {
+      reportActivityPageView("rate");
+      document.getElementById("rateModalBackdrop").classList.add("open");
+      setStarSelection(selectedStars);
+    }
 
-// ========================================
-// 8. 参与活动
-// ========================================
+    function closeRateModal() {
+      document.getElementById("rateModalBackdrop").classList.remove("open");
+    }
 
-function joinActivity() {
+    function setStarSelection(count) {
+      selectedStars = Math.max(1, Math.min(5, count));
+      const stars = document.querySelectorAll(".star");
+      stars.forEach(function (el) {
+        const n = parseInt(el.getAttribute("data-star"), 10);
+        el.classList.toggle("on", n <= selectedStars);
+      });
+    }
 
-    sendToUnity("join", {
+    function submitRating() {
+      sendToUnity("rated", { value: selectedStars });
+      closeRateModal();
+    }
 
-        activityId: 10001
+    function handlePromoImageError(which) {
+      const card = document.querySelector(
+        which === 1
+          ? '[data-panel="promo1"] .promo-card'
+          : '[data-panel="promo2"] .promo-card'
+      );
+      if (!card || card.querySelector(".promo-fallback")) {
+        return;
+      }
 
+      const title =
+        which === 1 ? "Organize the Fruit Stall" : "Match-3 Challenge · Fun Boosters";
+      const subtitle =
+        which === 1
+          ? "Match fruits, clear the shelves, and complete each level within the move limit."
+          : "Enjoy Classic Mode, timed challenges, and daily check-ins anytime.";
+
+      card.innerHTML =
+        '<div class="promo-fallback">' +
+        '<img class="logo" src="' + PROMO_FALLBACK_ICON + '" alt="" />' +
+        "<h2>" + title + "</h2>" +
+        "<p>" + subtitle + "</p>" +
+        "</div>";
+    }
+
+    function bindScrollDots() {
+      const scroller = document.getElementById("snapScroll");
+      const dots = document.querySelectorAll(".scroll-dots span");
+      const panels = scroller.querySelectorAll(".panel");
+
+      function updateDots() {
+        const height = scroller.clientHeight || 1;
+        const index = Math.round(scroller.scrollTop / height);
+        const clamped = Math.max(0, Math.min(panels.length - 1, index));
+        dots.forEach(function (dot, i) {
+          dot.classList.toggle("active", i === clamped);
+        });
+      }
+
+      scroller.addEventListener("scroll", updateDots, { passive: true });
+      updateDots();
+    }
+
+    function bindRateModal() {
+      document.getElementById("rateEntryBtn").addEventListener("click", openRateModal);
+      document.getElementById("privacyBtn").addEventListener("click", openPrivacy);
+      document.getElementById("rateCancelBtn").addEventListener("click", closeRateModal);
+      document.getElementById("rateSubmitBtn").addEventListener("click", submitRating);
+
+      document.getElementById("rateModalBackdrop").addEventListener("click", function (event) {
+        if (event.target.id === "rateModalBackdrop") {
+          closeRateModal();
+        }
+      });
+
+      document.querySelectorAll(".star").forEach(function (star) {
+        star.addEventListener("click", function () {
+          setStarSelection(parseInt(star.getAttribute("data-star"), 10));
+        });
+      });
+    }
+
+    window.addEventListener("load", function () {
+      console.log("Activity page loaded.");
+      loadFacebookConfig();
+      bindScrollDots();
+      bindRateModal();
     });
-
-}
-
-
-// ========================================
-// 9. 页面初始化
-// ========================================
-
-window.addEventListener("load", function() {
-
-    console.log("活动页面加载完成");
-
-    // 获取Facebook配置并发送给Unity
-
-    loadFacebookConfig();
-
-});
-
-</script>
-
+  </script>
 </body>
 </html>
