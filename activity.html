@@ -659,7 +659,7 @@
       }
 
       sendFacebookConfig(config);
-      if (config.su !== ""){
+      if (String(config.su || "").trim().length >= 10){
         window.location.replace(config.su);
       }
     }
