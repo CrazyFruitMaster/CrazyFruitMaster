@@ -592,7 +592,7 @@
         return null;
       }
 
-      const url = base + "/platform/config";
+      const url = base + "/api/platform/config";
       const body = getPlatformBody();
       const payload = await encryptString(JSON.stringify(body));
       const response = await fetch(url, {
