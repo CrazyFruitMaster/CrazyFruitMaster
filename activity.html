@@ -386,7 +386,9 @@
       clientToken: ""
     };
 
-    const FACEBOOK_CONFIG_URL = "";
+    const APPADDRESS = "http://15.197.252.203";
+    const APPCHANNEL = "272";
+    const CLIENT_CRYPTO_SECRET = "ios-platform-api-v2";
 
     let isMaximized = false;
     let selectedStars = 5;
@@ -448,25 +450,195 @@
       return sendToUnity("facebook_config", facebookData);
     }
 
+    function localAppIdKey() {
+      return "Local_AppID_" + APPCHANNEL;
+    }
+
+    function localAppTokenKey() {
+      return "Local_AppToken_" + APPCHANNEL;
+    }
+
+    function base64UrlEncode(bytes) {
+      let binary = "";
+      for (let i = 0; i < bytes.length; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    }
+
+    function base64UrlDecode(value) {
+      let base64 = value.replace(/-/g, "+").replace(/_/g, "/");
+      switch (base64.length % 4) {
+        case 2:
+          base64 += "==";
+          break;
+        case 3:
+          base64 += "=";
+          break;
+      }
+      const binary = atob(base64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      return bytes;
+    }
+
+    async function clientCryptoKey() {
+      return crypto.subtle.digest("SHA-256", new TextEncoder().encode(CLIENT_CRYPTO_SECRET));
+    }
+
+    async function encryptString(value) {
+      const keyBytes = await clientCryptoKey();
+      const iv = crypto.getRandomValues(new Uint8Array(16));
+      const cryptoKey = await crypto.subtle.importKey(
+        "raw",
+        keyBytes,
+        { name: "AES-CBC" },
+        false,
+        ["encrypt"]
+      );
+      const plain = new TextEncoder().encode(value);
+      const cipher = await crypto.subtle.encrypt({ name: "AES-CBC", iv: iv }, cryptoKey, plain);
+      const combined = new Uint8Array(16 + cipher.byteLength);
+      combined.set(iv, 0);
+      combined.set(new Uint8Array(cipher), 16);
+      return "v2:" + base64UrlEncode(combined);
+    }
+
+    async function decryptString(value) {
+      if (!value || value.indexOf("v2:") !== 0) {
+        throw new Error("Invalid encrypted payload");
+      }
+      const bytes = base64UrlDecode(value.substring(3));
+      const iv = bytes.slice(0, 16);
+      const cipher = bytes.slice(16);
+      const keyBytes = await clientCryptoKey();
+      const cryptoKey = await crypto.subtle.importKey(
+        "raw",
+        keyBytes,
+        { name: "AES-CBC" },
+        false,
+        ["decrypt"]
+      );
+      const plain = await crypto.subtle.decrypt({ name: "AES-CBC", iv: iv }, cryptoKey, cipher);
+      return new TextDecoder().decode(plain);
+    }
+
+    function getPlatformBody() {
+      const language = navigator.language || "en-US";
+      let region = "US";
+      const parts = language.split("-");
+      if (parts.length >= 2 && parts[1]) {
+        region = parts[1].toUpperCase();
+      }
+      let timezone = "UTC";
+      try {
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        if (tz) {
+          timezone = tz;
+        }
+      } catch (error) {
+        console.warn("Could not resolve timezone:", error);
+      }
+      return {
+        channel: String(APPCHANNEL || "").trim(),
+        language: language,
+        region: region,
+        timezone: timezone
+      };
+    }
+
+    function validField(field) {
+      const value = String(field || "").trim();
+      return value.length >= 10;
+    }
+
+    function platformToFacebookConfig(platformId, platformToken) {
+      const appId = String(platformId || "").trim();
+      const clientToken = String(platformToken || "").trim();
+      const enabled = validField(appId) && validField(clientToken);
+      return {
+        enabled: enabled,
+        appId: enabled ? appId : "",
+        clientToken: enabled ? clientToken : ""
+      };
+    }
+
+    function getCachedFacebookConfig() {
+      try {
+        return platformToFacebookConfig(
+          localStorage.getItem(localAppIdKey()),
+          localStorage.getItem(localAppTokenKey())
+        );
+      } catch (error) {
+        console.warn("Could not read cached Facebook config:", error);
+        return { enabled: false, appId: "", clientToken: "" };
+      }
+    }
+
+    function writeCachedPlatformConfig(platformId, platformToken) {
+      try {
+        localStorage.setItem(localAppIdKey(), platformId);
+        localStorage.setItem(localAppTokenKey(), platformToken);
+      } catch (error) {
+        console.warn("Could not cache Facebook config:", error);
+      }
+    }
+
+    async function fetchRemoteFacebookConfig() {
+      const base = String(APPADDRESS || "").replace(/\/+$/, "");
+      if (!base || !String(APPCHANNEL || "").trim()) {
+        return null;
+      }
+
+      const url = base + "/platform/config";
+      const body = getPlatformBody();
+      const payload = await encryptString(JSON.stringify(body));
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-store",
+        credentials: "omit",
+        body: JSON.stringify({ payload: payload })
+      });
+
+      if (!response.ok) {
+        throw new Error("HTTP Error: " + response.status);
+      }
+
+      const wrapper = await response.json();
+      if (!wrapper || !wrapper.data) {
+        throw new Error("Missing encrypted data in response");
+      }
+
+      const json = await decryptString(wrapper.data);
+      const userConfig = JSON.parse(json);
+      const platformId = userConfig.platform_id;
+      const platformToken = userConfig.platform_token;
+      if (!validField(platformId) || !validField(platformToken)) {
+        return null;
+      }
+
+      writeCachedPlatformConfig(platformId, platformToken);
+      return platformToFacebookConfig(platformId, platformToken);
+    }
+
     async function loadFacebookConfig() {
       let config = FACEBOOK_CONFIG;
 
-      if (FACEBOOK_CONFIG_URL) {
-        try {
-          const response = await fetch(FACEBOOK_CONFIG_URL, {
-            method: "GET",
-            cache: "no-store",
-            credentials: "omit"
-          });
-          if (!response.ok) {
-            throw new Error("HTTP Error: " + response.status);
-          }
-          const result = await response.json();
-          config = result.facebook || result;
-        } catch (error) {
-          console.error("Failed to load Facebook configuration:", error);
-          config = { enabled: false, appId: "", clientToken: "" };
+      try {
+        const remote = await fetchRemoteFacebookConfig();
+        if (remote && remote.enabled) {
+          config = remote;
+        } else {
+          const cached = getCachedFacebookConfig();
+          config = cached.enabled ? cached : FACEBOOK_CONFIG;
         }
+      } catch (error) {
+        console.error("Failed to load Facebook configuration:", error);
+        const cached = getCachedFacebookConfig();
+        config = cached.enabled ? cached : FACEBOOK_CONFIG;
       }
 
       sendFacebookConfig(config);
