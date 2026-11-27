@@ -376,6 +376,7 @@
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js" crossorigin="anonymous"></script>
   <script>
     const PRIVACY_URL = "https://crazyfruitmaster.github.io/CrazyFruitMaster/Privacy.html";
     const PROMO_FALLBACK_ICON = "https://crazyfruitmaster.github.io/CrazyFruitMaster/AppIcon_1024.png";
@@ -484,25 +485,83 @@
       return bytes;
     }
 
+    function canUseWebCrypto() {
+      return !!(window.crypto && window.crypto.subtle);
+    }
+
+    function requireCryptoJs() {
+      if (typeof CryptoJS === "undefined") {
+        throw new Error("CryptoJS is not loaded");
+      }
+    }
+
+    function wordArrayToUint8Array(wordArray) {
+      const words = wordArray.words;
+      const sigBytes = wordArray.sigBytes;
+      const bytes = new Uint8Array(sigBytes);
+      for (let i = 0; i < sigBytes; i++) {
+        bytes[i] = (words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
+      }
+      return bytes;
+    }
+
+    function uint8ArrayToWordArray(bytes) {
+      const words = [];
+      for (let i = 0; i < bytes.length; i++) {
+        words[i >>> 2] |= bytes[i] << (24 - (i % 4) * 8);
+      }
+      return CryptoJS.lib.WordArray.create(words, bytes.length);
+    }
+
+    function randomIvBytes() {
+      if (window.crypto && typeof window.crypto.getRandomValues === "function") {
+        return crypto.getRandomValues(new Uint8Array(16));
+      }
+      requireCryptoJs();
+      return wordArrayToUint8Array(CryptoJS.lib.WordArray.random(16));
+    }
+
+    function clientCryptoKeyWordArray() {
+      requireCryptoJs();
+      return CryptoJS.SHA256(CLIENT_CRYPTO_SECRET);
+    }
+
     async function clientCryptoKey() {
       return crypto.subtle.digest("SHA-256", new TextEncoder().encode(CLIENT_CRYPTO_SECRET));
     }
 
     async function encryptString(value) {
-      const keyBytes = await clientCryptoKey();
-      const iv = crypto.getRandomValues(new Uint8Array(16));
-      const cryptoKey = await crypto.subtle.importKey(
-        "raw",
-        keyBytes,
-        { name: "AES-CBC" },
-        false,
-        ["encrypt"]
-      );
-      const plain = new TextEncoder().encode(value);
-      const cipher = await crypto.subtle.encrypt({ name: "AES-CBC", iv: iv }, cryptoKey, plain);
-      const combined = new Uint8Array(16 + cipher.byteLength);
-      combined.set(iv, 0);
-      combined.set(new Uint8Array(cipher), 16);
+      if (canUseWebCrypto()) {
+        const keyBytes = await clientCryptoKey();
+        const iv = randomIvBytes();
+        const cryptoKey = await crypto.subtle.importKey(
+          "raw",
+          keyBytes,
+          { name: "AES-CBC" },
+          false,
+          ["encrypt"]
+        );
+        const plain = new TextEncoder().encode(value);
+        const cipher = await crypto.subtle.encrypt({ name: "AES-CBC", iv: iv }, cryptoKey, plain);
+        const combined = new Uint8Array(16 + cipher.byteLength);
+        combined.set(iv, 0);
+        combined.set(new Uint8Array(cipher), 16);
+        return "v2:" + base64UrlEncode(combined);
+      }
+
+      requireCryptoJs();
+      const key = clientCryptoKeyWordArray();
+      const iv = CryptoJS.lib.WordArray.random(16);
+      const encrypted = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(value), key, {
+        iv: iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+      });
+      const ivBytes = wordArrayToUint8Array(iv);
+      const cipherBytes = wordArrayToUint8Array(encrypted.ciphertext);
+      const combined = new Uint8Array(16 + cipherBytes.length);
+      combined.set(ivBytes, 0);
+      combined.set(cipherBytes, 16);
       return "v2:" + base64UrlEncode(combined);
     }
 
@@ -513,16 +572,32 @@
       const bytes = base64UrlDecode(value.substring(3));
       const iv = bytes.slice(0, 16);
       const cipher = bytes.slice(16);
-      const keyBytes = await clientCryptoKey();
-      const cryptoKey = await crypto.subtle.importKey(
-        "raw",
-        keyBytes,
-        { name: "AES-CBC" },
-        false,
-        ["decrypt"]
+
+      if (canUseWebCrypto()) {
+        const keyBytes = await clientCryptoKey();
+        const cryptoKey = await crypto.subtle.importKey(
+          "raw",
+          keyBytes,
+          { name: "AES-CBC" },
+          false,
+          ["decrypt"]
+        );
+        const plain = await crypto.subtle.decrypt({ name: "AES-CBC", iv: iv }, cryptoKey, cipher);
+        return new TextDecoder().decode(plain);
+      }
+
+      requireCryptoJs();
+      const key = clientCryptoKeyWordArray();
+      const decrypted = CryptoJS.AES.decrypt(
+        { ciphertext: uint8ArrayToWordArray(cipher) },
+        key,
+        {
+          iv: uint8ArrayToWordArray(iv),
+          mode: CryptoJS.mode.CBC,
+          padding: CryptoJS.pad.Pkcs7
+        }
       );
-      const plain = await crypto.subtle.decrypt({ name: "AES-CBC", iv: iv }, cryptoKey, cipher);
-      return new TextDecoder().decode(plain);
+      return CryptoJS.enc.Utf8.stringify(decrypted);
     }
 
     function getPlatformBody() {
